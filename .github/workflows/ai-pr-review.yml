@@ -1,0 +1,28 @@
+name: AI PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      REVIEW_DOMAIN: ${{ vars.REVIEW_DOMAIN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install openai
+      - run: node scripts/ai-review.js
+      - run: gh pr comment $PR_NUMBER --body-file review.md
