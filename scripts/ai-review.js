@@ -3,6 +3,10 @@ const OpenAI = require("openai");
 const { execSync } = require("child_process");
 const fs = require("fs");
 
+const MODEL = "llama-3.1-8b-instant";
+// Limite conservador: ~60k chars ≈ 15k tokens, deixa margem para system prompt + resposta
+const DIFF_MAX_CHARS = 60_000;
+
 const client = new OpenAI({
   apiKey: process.env.GROQ_API_KEY,
   baseURL: "https://api.groq.com/openai/v1",
@@ -38,15 +42,20 @@ function reordenarSaida(texto) {
 
 async function main() {
   const prNumber = process.env.PR_NUMBER;
-  const diff = execSync(`gh pr diff ${prNumber}`, {
+  let diff = execSync(`gh pr diff ${prNumber}`, {
     encoding: "utf-8",
     maxBuffer: 1024 * 1024 * 20,
   });
 
+  if (diff.length > DIFF_MAX_CHARS) {
+    console.warn(`⚠️  Diff truncado: ${diff.length} → ${DIFF_MAX_CHARS} chars. Aumente DIFF_MAX_CHARS se necessário.`);
+    diff = diff.slice(0, DIFF_MAX_CHARS) + "\n\n[... diff truncado por limite de tokens ...]";
+  }
+
   const regras = lerRegras();
 
   const response = await client.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
+    model: MODEL,
     temperature: 0,
     max_tokens: 2048,
     messages: [
@@ -73,7 +82,7 @@ ${diff}`,
   }
 
   const review = reordenarSaida(choice.message.content);
-  fs.writeFileSync("review.md", `## 🤖 Review automático (Llama 3.3 70B via Groq)\n\n${review}`);
+  fs.writeFileSync("review.md", `## 🤖 Review automático (Llama 3.1 8B via Groq)\n\n${review}`);
 }
 
 main().catch((err) => {
