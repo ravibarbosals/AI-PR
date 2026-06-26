@@ -17,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/ravibarbosals/AI-PR/issues"
   },
-  "homepage": "https://github.com/ravibarbosals/AI-PR#readme"
+  "homepage": "https://github.com/ravibarbosals/AI-PR#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "openai": "^6.45.0"
+  }
 }
