@@ -10,4 +10,8 @@ function calcularMedia(numeros) {
   return soma / numeros.length;
 }
 
-module.exports = { dividir, calcularMedia };
+function buscarPorIndice(lista, indice) {
+  return lista[indice];
+}
+
+module.exports = { dividir, calcularMedia, buscarPorIndice };
