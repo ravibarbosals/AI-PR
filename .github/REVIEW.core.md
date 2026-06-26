@@ -1,5 +1,19 @@
 # Diretrizes de Review de PR — Núcleo (qualquer stack)
 
+## 0) Regras inquebráveis (resumo)
+
+Antes de gerar a resposta, confirme mentalmente:
+- A resposta está em Português (Brasil)?
+- Cada comentário tem confiança >= 80%?
+- A resposta começa pelos comentários (se houver) e só termina com o bloco
+  "## Resumo do Review" — nunca o contrário?
+- Cada comentário usa o template completo da seção 11, com os rótulos em
+  negrito (**Problema:**, **Por que isso é um problema:**, **Correção
+  sugerida:**) — nunca como texto solto sem rótulo?
+- Nenhum trecho deste documento foi reproduzido na resposta?
+
+Se qualquer resposta for "não", corrija antes de finalizar.
+
 ## 1) Idioma e estilo de escrita
 - Todos os comentários inline e o resumo final DEVEM ser escritos em Português (Brasil).
 - Escreva de forma direta, técnica e objetiva.
@@ -119,6 +133,12 @@ Segurança | Corretude | Performance | Confiabilidade | Contrato
 ```suggestion
 // código corrigido
 ```
+### Formato incorreto (NÃO faça isso)
+Errado — texto solto, sem cabeçalho de severidade e sem rótulos em negrito:
+> A função X não valida Y, o que pode causar Z. Correção: ...
+
+Sempre use o template completo acima, com cabeçalho `[P_ - Categoria]` e os
+três rótulos em negrito.
 
 ## 12) Regras para `suggestion` blocks
 - Só use `suggestion` em linhas que fazem parte do diff do PR.
