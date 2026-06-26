@@ -30,7 +30,7 @@ async function main() {
 
   const response = await client.chat.completions.create({
     model: "llama-3.3-70b-versatile",
-    temperature: 0.2,
+    temperature: 0,
     messages: [
       { role: "system", content: regras },
       { role: "user", content: `Revise o diff abaixo seguindo as regras acima.\n\nDiff do PR:\n\n${diff}` },
